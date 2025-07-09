@@ -28,7 +28,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.sizeIn
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -96,7 +95,13 @@ fun PlayerDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(0.5f)
-                    .windowInsetsPadding(WindowInsets.safeDrawing)
+                    .padding(
+                        PaddingValues(
+                            top = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding(),
+                            start = WindowInsets.safeDrawing.asPaddingValues().calculateStartPadding(LayoutDirection.Ltr),
+                            end = WindowInsets.safeDrawing.asPaddingValues().calculateEndPadding(LayoutDirection.Ltr)
+                        )
+                    )
             ){
                 with(sharedTransitionScope){
                     GlideImage(
@@ -238,8 +243,7 @@ fun PlayerDetailScreen(
                             GlideImage(
                                 model = url,
                                 contentDescription = "",
-
-                                )
+                            )
                         }
                     } ?: run {
                         Image(

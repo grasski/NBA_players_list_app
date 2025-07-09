@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">NBA_players_list</string>
+
+
+    <string name="btn_refresh">Refresh</string>
+    <string name="btn_player_info">Player info</string>
+    <string name="btn_team_info">Team info</string>
+
+    <string name="player_info_height">Height</string>
+    <string name="player_info_weight">Weight</string>
+    <string name="player_info_college">College</string>
+    <string name="player_info_country">Country</string>
+    <string name="player_info_draft_year">Draft year</string>
+    <string name="player_info_draft_round">Draft round</string>
+    <string name="player_info_draft_number">Draft number</string>
+
+    <string name="team_info_conference">Conference</string>
+    <string name="team_info_division">Division</string>
+    <string name="team_info_city">City</string>
+    <string name="team_info_full_name">Full name</string>
+    <string name="team_info_abbreviation">Abbreviation</string>
+
+
+    <string name="error_unknown">Unknown error occurred during API call! Maybe turn on internet connection?</string>
+    <string name="error_unauthorized">Unauthorized - You either need an API key or your account tier does not have access to the endpoint.</string>
+    <string name="error_bad_request">Bad Request - The request is invalid. The request parameters are probably incorrect.</string>
+    <string name="error_not_found">Not Found - The specified resource could not be found.</string>
+    <string name="error_not_acceptable">Not Acceptable - You requested a format that isn\'t json.</string>
+    <string name="error_too_many_requests">Too Many Requests - You\'re rate limited.</string>
+    <string name="error_internal_server_error">Internal Server Error - We had a problem with our server. Try again later.</string>
+    <string name="error_server_unavailable">Service Unavailable - We\'re temporarily offline for maintenance. Please try again later.</string>
+    
+</resources>

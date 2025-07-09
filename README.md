@@ -54,6 +54,24 @@ https://a.espncdn.com/i/teamlogos/nba/500/[team.abbreviation].png
 
 ---
 
+## 🎨 Colors
+
+The app uses colors inspired by the official **NBA logo**:
+
+```kotlin
+val blue = Color(0xFF1D428A)
+val red = Color(0xFFC8102E)
+```
+
+---
+
+## 🎨 Design Inspiration
+
+The player detail screen design was partly inspired by this Dribbble shot:  
+👉 [NBA Player Stephen Curry](https://dribbble.com/shots/6563595-NBA-Player-Stephen-Curry)
+
+---
+
 ## 📸 Screenshots
 
 <p align="center">

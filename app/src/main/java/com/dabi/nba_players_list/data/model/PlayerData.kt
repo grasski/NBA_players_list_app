@@ -23,4 +23,6 @@ data class PlayerData(
     @SerializedName("draft_number")
     val draftNumber: Int,
     val team: TeamData,
+
+    var imageUrl: String? = null
 )

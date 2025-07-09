@@ -73,20 +73,32 @@ fun SharedTransitionScope.PlayerCard(
                 .background(brush = Brush.horizontalGradient(listOf(NBAColors.blue, NBAColors.red))),
             contentAlignment = Alignment.Center,
         ){
-            val nameChar = playerData.firstName.getOrNull(0) ?: ""
-            val lastNameChar = playerData.lastName.getOrNull(0) ?: ""
-            val namePlaceholder = nameChar.toString() + lastNameChar.toString()
-            BasicText(
-                text = namePlaceholder,
-                style = TextStyle(
-                    color = Color.White,
-                    fontWeight = FontWeight.ExtraBold
-                ),
-                maxLines = 1,
-                autoSize = TextAutoSize.StepBased(),
-                modifier = Modifier
-                    .padding(10.dp)
-            )
+            playerData.imageUrl?.let {  url ->
+                GlideImage(
+                    model = url,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .aspectRatio(1f)
+                        .background(Color.White)
+                        .border(1.dp, Color.LightGray, CircleShape),
+                )
+            } ?: run{
+                val nameChar = playerData.firstName.getOrNull(0) ?: ""
+                val lastNameChar = playerData.lastName.getOrNull(0) ?: ""
+                val namePlaceholder = nameChar.toString() + lastNameChar.toString()
+                BasicText(
+                    text = namePlaceholder,
+                    style = TextStyle(
+                        color = Color.White,
+                        fontWeight = FontWeight.ExtraBold
+                    ),
+                    maxLines = 1,
+                    autoSize = TextAutoSize.StepBased(),
+                    modifier = Modifier
+                        .padding(10.dp)
+                )
+            }
         }
 
         Column(

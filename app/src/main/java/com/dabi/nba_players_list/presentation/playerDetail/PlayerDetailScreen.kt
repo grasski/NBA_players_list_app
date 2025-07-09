@@ -2,9 +2,11 @@ package com.dabi.nba_players_list.presentation.playerDetail
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
@@ -40,9 +42,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -214,14 +219,35 @@ fun PlayerDetailScreen(
                     }
                 }
 
-                Image(
-                    painter = painterResource(R.drawable.player_silhouette),
-                    contentDescription = null,
+                var visible by rememberSaveable { mutableStateOf(false) }
+                LaunchedEffect(Unit) {
+                    visible = true
+                }
+                AnimatedVisibility(
+                    visible = visible,
+                    enter = slideInVertically{ it },
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .fillMaxHeight(1f)
                         .fillMaxWidth(0.5f)
-                )
+                ){
+                    playerData.imageUrl?.let { url ->
+                        Box(
+                            contentAlignment = Alignment.BottomCenter
+                        ){
+                            GlideImage(
+                                model = url,
+                                contentDescription = "",
+
+                                )
+                        }
+                    } ?: run {
+                        Image(
+                            painter = painterResource(R.drawable.player_silhouette),
+                            contentDescription = null,
+                        )
+                    }
+                }
             }
         }
 

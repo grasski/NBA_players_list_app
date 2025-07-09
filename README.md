@@ -1,7 +1,7 @@
 # 🏀 NBA Players List
 
-A modern Android application built with **Kotlin** and **Jetpack Compose** to display a list of NBA players.  
-It fetches player data from the [balldontlie API](https://www.balldontlie.io/) and displays team logos dynamically.
+A modern Android application built with **Kotlin** and **Jetpack Compose** to display a list of NBA players, their details, and photos.  
+The app integrates multiple APIs to provide player information and images.
 
 ---
 
@@ -10,6 +10,7 @@ It fetches player data from the [balldontlie API](https://www.balldontlie.io/) a
 - 📋 List of NBA players with detailed information
 - 🔍 Search functionality (TODO)
 - 🏷️ Team logos fetched dynamically
+- 🖼️ Player photos loaded from TheSportsDB
 - ⚡️ Fast and smooth UI with Jetpack Compose
 - 📡 Data fetched via Retrofit
 
@@ -51,6 +52,19 @@ API_KEY=YOUR_API_KEY
 
 Team logos are loaded dynamically using Glide from ESPN’s CDN:
 https://a.espncdn.com/i/teamlogos/nba/500/[team.abbreviation].png
+
+---
+
+## 🧩 Additional API Integration
+
+Besides the balldontlie API, the app also uses the [TheSportsDB API](https://www.thesportsdb.com/api.php) to retrieve player images by name:
+https://www.thesportsdb.com/api/v1/json/123/searchplayers.php?p={playerName}
+
+This allows searching for a player by name and displaying their photo in the app.
+
+> **Note:**  
+> - TheSportsDB offers **30 free API calls per minute**.  
+> - The database **does not contain all NBA players**, so some player images may be missing.
 
 ---
 

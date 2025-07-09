@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.dabi.nba_players_list.R
 import com.dabi.nba_players_list.data.model.PlayersListState
 import com.dabi.nba_players_list.data.remote.ApiError
-import com.dabi.nba_players_list.data.repository.PlayerRepository
+import com.dabi.nba_players_list.data.repository.PlayersRepository
 import com.dabi.nba_players_list.utils.UiTexts
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -45,7 +47,7 @@ sealed interface PlayersListSideEvents{
  */
 @HiltViewModel
 class PlayersListViewModel @Inject constructor(
-    private val playersRepository: PlayerRepository,
+    private val playersRepository: PlayersRepository,
 ): ViewModel(){
     private val _state = MutableStateFlow<PlayersListState>(PlayersListState())
     val state = _state.asStateFlow()
@@ -72,13 +74,27 @@ class PlayersListViewModel @Inject constructor(
     }
 
     /**
-     * Fetches a list of players from the repository.
+     * Fetches a list of players from the repository and updates their image URLs.
      *
-     * This function updates the UI state to indicate loading, makes the API call,
-     * and then updates the state with the fetched players or an error message.
-     * It also handles pagination by updating the `_cursor`.
-     * If an error occurs (HttpException or other Exception), it updates the state with an appropriate
-     * error message and sends a side event to show a toast.
+     * This function performs the following steps:
+     * 1. Clears any existing error messages in the UI state.
+     * 2. Checks if a fetch operation is already in progress to avoid concurrent requests.
+     * 3. Sets the UI state to loading.
+     * 4. Calls the repository to get a list of players based on the `count` and current `_cursor`.
+     * 5. Sets the UI state to not loading.
+     * 6. Updates the `_cursor` for pagination.
+     * 7. Appends the newly fetched players to the existing list in the UI state.
+     * 8. Asynchronously fetches the image URL for each player:
+     *     - Calls the repository to get the image URL based on the player's full name.
+     *     - Updates the corresponding player object in the UI state with the fetched image URL.
+     *     - Handles potential exceptions during image URL fetching (e.g., rate limits) silently.
+     * 9. If an `HttpException` occurs during the initial player fetch:
+     *     - Determines the appropriate error message based on the HTTP status code.
+     *     - Updates the UI state with the error message and sets loading to false.
+     *     - Sends a `ShowToast` side event.
+     * 10. If any other `Exception` occurs:
+     *     - Updates the UI state with a generic unknown error message and sets loading to false.
+     *     - Sends a `ShowToast` side event.
      *
      * @param count The number of players to fetch. Defaults to `_perPage`.
      */
@@ -100,6 +116,27 @@ class PlayersListViewModel @Inject constructor(
                     _state.update {
                         it.copy(players = it.players.plus(response))
                     }
+
+                    // Asynchronously fetch the image URL for each player
+                    response.map { player ->
+                        async {
+                            try {
+                                val url = playersRepository.getPlayerImageUrl("${player.firstName} ${player.lastName}")
+
+                                val updatedPlayer = player.copy(imageUrl = url)
+                                _state.update { currentState ->
+                                    currentState.copy(
+                                        players = currentState.players.map {
+                                            if (it.id == updatedPlayer.id) updatedPlayer
+                                            else it
+                                        }
+                                    )
+                                }
+                            } catch (e: Exception) {
+                                // Rate limit exceeded, unfortunately this API can be called only 30x in a minute
+                            }
+                        }
+                    }.awaitAll()
                 } catch (e: HttpException) {
                     val apiError = ApiError.entries.find { it.code == e.code() }
 

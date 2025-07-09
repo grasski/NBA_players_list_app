@@ -1,8 +1,9 @@
 package com.dabi.nba_players_list.di
 
-import com.dabi.nba_players_list.data.remote.NbaApiService
-import com.dabi.nba_players_list.data.repository.PlayerRepository
-import com.dabi.nba_players_list.data.repository.PlayerRepositoryImpl
+import com.dabi.nba_players_list.data.remote.BallDontLieApiService
+import com.dabi.nba_players_list.data.remote.SportsDbApiService
+import com.dabi.nba_players_list.data.repository.PlayersRepository
+import com.dabi.nba_players_list.data.repository.PlayersRepositoryImpl
 import com.dabi.nba_players_list.presentation.playersList.PlayersListViewModel
 import dagger.Module
 import dagger.Provides
@@ -19,27 +20,33 @@ class AppModule{
 
     @Provides
     @Singleton
-    fun provideApiInstance(): NbaApiService {
-        try {
-            return Retrofit.Builder()
-                .baseUrl("https://api.balldontlie.io/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(NbaApiService::class.java)
-        } catch (e: Exception){
-            throw e
-        }
+    fun provideBallDontLieApiInstance(): BallDontLieApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://api.balldontlie.io/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(BallDontLieApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun providePlayerRepository(nbaApiService: NbaApiService): PlayerRepository {
-        return PlayerRepositoryImpl(nbaApiService)
+    fun provideSportsDbApiInstance(): SportsDbApiService {
+        return Retrofit.Builder()
+            .baseUrl("https://www.thesportsdb.com/api/v1/json/123/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(SportsDbApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun providePlayersListViewModel(playerRepository: PlayerRepository): PlayersListViewModel {
-        return PlayersListViewModel(playerRepository)
+    fun providePlayerRepository(ballDontLieApiService: BallDontLieApiService, sportsDbApiService: SportsDbApiService): PlayersRepository {
+        return PlayersRepositoryImpl(ballDontLieApiService, sportsDbApiService)
+    }
+
+    @Provides
+    @Singleton
+    fun providePlayersListViewModel(playersRepository: PlayersRepository): PlayersListViewModel {
+        return PlayersListViewModel(playersRepository)
     }
 }

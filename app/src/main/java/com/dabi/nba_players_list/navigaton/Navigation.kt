@@ -69,7 +69,6 @@ fun Navigation() {
                 }
             ) {
                 val id = it.toRoute<Screens.DetailPlayer>().id
-
                 val playerData = state.players.first { p-> p.id == id }
 
                 PlayerDetailScreen(

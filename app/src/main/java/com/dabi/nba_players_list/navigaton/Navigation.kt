@@ -70,19 +70,14 @@ fun Navigation() {
             ) {
                 val id = it.toRoute<Screens.DetailPlayer>().id
 
-                val player = state.players.find { p ->
-                    p.id == id
-                }
-                player?.let { playerData ->
-                    PlayerDetailScreen(
-                        navController = navController,
-                        playerData = playerData,
-                        sharedTransitionScope = this@SharedTransitionLayout,
-                        animatedContentScope = this
-                    )
-                } ?: run {
-                    //TODO
-                }
+                val playerData = state.players.first { p-> p.id == id }
+
+                PlayerDetailScreen(
+                    navController = navController,
+                    playerData = playerData,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedContentScope = this
+                )
             }
         }
     }

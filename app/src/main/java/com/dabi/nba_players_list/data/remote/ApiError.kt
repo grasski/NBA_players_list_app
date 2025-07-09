@@ -3,6 +3,12 @@ package com.dabi.nba_players_list.data.remote
 import com.dabi.nba_players_list.R
 
 
+/**
+ * Represents different API error types with their corresponding HTTP status codes
+ * and string resource IDs for localized error messages.
+ *
+ * @property code The HTTP status code associated with the error.
+ */
 enum class ApiError(val code: Int) {
     UNAUTHORIZED(401) {
         override fun getStringId(): Int {

@@ -53,7 +53,14 @@ class PlayersListViewModel @Inject constructor(
     private val _sideEvent = Channel<PlayersListSideEvents>()
     val sideEvent = _sideEvent.receiveAsFlow()
 
+    /**
+     * The number of players to fetch per page.
+     */
     private val _perPage = 35
+    /**
+     * The current cursor position for paginating player data.
+     * This value is incremented by [_perPage] after each successful fetch.
+     */
     private var _cursor = 0
 
     fun onEvent(event: PlayersListEvents){
@@ -64,6 +71,17 @@ class PlayersListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Fetches a list of players from the repository.
+     *
+     * This function updates the UI state to indicate loading, makes the API call,
+     * and then updates the state with the fetched players or an error message.
+     * It also handles pagination by updating the `_cursor`.
+     * If an error occurs (HttpException or other Exception), it updates the state with an appropriate
+     * error message and sends a side event to show a toast.
+     *
+     * @param count The number of players to fetch. Defaults to `_perPage`.
+     */
     private fun fetchPlayers(count: Int = _perPage) {
         _state.update {
             it.copy(error = null)

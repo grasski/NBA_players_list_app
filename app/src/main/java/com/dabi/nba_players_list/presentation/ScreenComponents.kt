@@ -32,10 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.dabi.nba_players_list.R
 import com.dabi.nba_players_list.data.model.PlayerData
 import com.dabi.nba_players_list.utils.NBAColors
-import com.dabi.nba_players_list.utils.UiTexts
 
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalSharedTransitionApi::class)
@@ -84,8 +82,8 @@ fun SharedTransitionScope.PlayerCard(
                         .border(1.dp, Color.LightGray, CircleShape),
                 )
             } ?: run{
-                val nameChar = playerData.firstName.getOrNull(0) ?: ""
-                val lastNameChar = playerData.lastName.getOrNull(0) ?: ""
+                val nameChar = playerData.firstName?.getOrNull(0) ?: ""
+                val lastNameChar = playerData.lastName?.getOrNull(0) ?: ""
                 val namePlaceholder = nameChar.toString() + lastNameChar.toString()
                 BasicText(
                     text = namePlaceholder,
@@ -113,7 +111,7 @@ fun SharedTransitionScope.PlayerCard(
             ) {
                 Row {
                     Text(
-                        text = playerData.firstName,
+                        text = playerData.firstName ?: "",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
@@ -129,7 +127,7 @@ fun SharedTransitionScope.PlayerCard(
                         fontWeight = FontWeight.Bold
                     ))
                     Text(
-                        text = playerData.lastName,
+                        text = playerData.lastName ?: "",
                         style = MaterialTheme.typography.bodyLarge.copy(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold
@@ -143,7 +141,7 @@ fun SharedTransitionScope.PlayerCard(
                 }
 
                 GlideImage(
-                    model = "https://a.espncdn.com/i/teamlogos/nba/500/${playerData.team.abbreviation}.png",
+                    model = "https://a.espncdn.com/i/teamlogos/nba/500/${playerData.team?.abbreviation}.png",
                     contentDescription = "",
                     modifier = Modifier
                         .clip(CircleShape)
@@ -165,7 +163,7 @@ fun SharedTransitionScope.PlayerCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 BasicText(
-                    text = playerData.position,
+                    text = playerData.position ?: "",
                     maxLines = 1,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = Color.Black,
@@ -178,7 +176,7 @@ fun SharedTransitionScope.PlayerCard(
                         )
                 )
                 BasicText(
-                    text = playerData.team.fullName,
+                    text = playerData.team?.fullName ?: "",
                     maxLines = 1,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = Color.Black,

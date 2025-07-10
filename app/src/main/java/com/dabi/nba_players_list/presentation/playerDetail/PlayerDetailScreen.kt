@@ -105,7 +105,7 @@ fun PlayerDetailScreen(
             ){
                 with(sharedTransitionScope){
                     GlideImage(
-                        model = "https://a.espncdn.com/i/teamlogos/nba/500/${playerData.team.abbreviation}.png",
+                        model = "https://a.espncdn.com/i/teamlogos/nba/500/${playerData.team?.abbreviation}.png",
                         contentDescription = "",
                         modifier = Modifier
                             .padding(26.dp)
@@ -151,7 +151,7 @@ fun PlayerDetailScreen(
                     ) {
                         with(sharedTransitionScope){
                             BasicText(
-                                text = playerData.firstName,
+                                text = playerData.firstName ?: "",
                                 autoSize = TextAutoSize.StepBased(),
                                 style = MaterialTheme.typography.labelLarge.copy(
                                     color = Color.White
@@ -164,7 +164,7 @@ fun PlayerDetailScreen(
                                     ),
                             )
                             BasicText(
-                                text = playerData.lastName,
+                                text = playerData.lastName ?: "",
                                 autoSize = TextAutoSize.StepBased(),
                                 style = MaterialTheme.typography.labelLarge.copy(
                                     fontWeight = FontWeight.Bold,
@@ -190,7 +190,7 @@ fun PlayerDetailScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.Start)
                 ){
                     Text(
-                        text = "#${playerData.jerseyNumber}",
+                        text = "#${playerData.jerseyNumber ?: "-"}",
                         style = MaterialTheme.typography.labelLarge.copy(
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -208,7 +208,7 @@ fun PlayerDetailScreen(
 
                     with(sharedTransitionScope){
                         Text(
-                            text = playerData.position,
+                            text = playerData.position ?: "-",
                             style = MaterialTheme.typography.labelLarge.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
@@ -309,43 +309,43 @@ fun PlayerDetailScreen(
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.player_info_height).asString(),
-                                value = playerData.height.footInchToCm().toString() + " cm"
+                                value = playerData.height?.footInchToCm()?.let { h-> "$h cm" } ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.player_info_weight).asString(),
-                                value = playerData.weight.poundToKg().toString() + " kg"
+                                value = playerData.weight?.poundToKg()?.let { w-> "$w kg" } ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.player_info_college).asString(),
-                                value = playerData.college
+                                value = playerData.college ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.player_info_country).asString(),
-                                value = playerData.country
+                                value = playerData.country ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.player_info_draft_year).asString(),
-                                value = playerData.draftYear.toString()
+                                value = playerData.draftYear?.toString() ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.player_info_draft_number).asString(),
-                                value = playerData.draftNumber.toString()
+                                value = playerData.draftNumber?.toString() ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.player_info_draft_round).asString(),
-                                value = playerData.draftRound.toString()
+                                value = playerData.draftRound?.toString() ?: "-"
                             )
                         }
                     } else {
@@ -353,35 +353,35 @@ fun PlayerDetailScreen(
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.team_info_full_name)
                                     .asString(),
-                                value = playerData.team.fullName
+                                value = playerData.team?.fullName ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.team_info_abbreviation)
                                     .asString(),
-                                value = playerData.team.abbreviation
+                                value = playerData.team?.abbreviation ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.team_info_city)
                                     .asString(),
-                                value = playerData.team.city
+                                value = playerData.team?.city ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.team_info_division)
                                     .asString(),
-                                value = playerData.team.division
+                                value = playerData.team?.division ?: "-"
                             )
                         }
                         item {
                             DetailInfoItem(
                                 title = UiTexts.StringResource(R.string.team_info_conference)
                                     .asString(),
-                                value = playerData.team.conference
+                                value = playerData.team?.conference ?: "-"
                             )
                         }
                     }

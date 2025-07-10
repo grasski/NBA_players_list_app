@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class TeamData(
     val id: Int,
-    val conference: String,
-    val division: String,
-    val city: String,
-    val name: String,
+    val conference: String?,
+    val division: String?,
+    val city: String?,
+    val name: String?,
     @SerializedName("full_name")
-    val fullName: String,
-    val abbreviation: String
+    val fullName: String?,
+    val abbreviation: String?
 )
